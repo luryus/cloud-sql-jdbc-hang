@@ -29,11 +29,12 @@ public class App {
 
         if (args.length != 1) {
             System.err.println("Usage: app <Cloud SQL JDBC connection string>");
-            System.err.println("e.g.: app 'jdbc:postgresql:///postgres?cloudSqlInstance=gcp-project:europe-west3:sql-instance-1&username=postgres'");
+            System.err.println("e.g.: app 'jdbc:postgresql:///postgres?cloudSqlInstance=gcp-project:europe-west3:sql-instance-1&user=postgres'");
             return;
         }
 
         var connString = args[0];
+        logger.info("Connection string: " + connString);
         var password = System.getenv("DB_PASSWORD");
         if (password == null) {
             System.err.println("Give password in DB_PASSWORD env var");
