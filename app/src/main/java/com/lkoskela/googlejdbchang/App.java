@@ -3,9 +3,11 @@
  */
 package com.lkoskela.googlejdbchang;
 
+import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class App {
@@ -13,6 +15,17 @@ public class App {
     public static final Logger logger = Logger.getLogger("app");
 
     public static void main(String[] args) {
+
+        try (var logConfigInputStream = App.class.getClassLoader().getResourceAsStream("logging.properties")) {
+            try {
+                LogManager.getLogManager().readConfiguration(logConfigInputStream);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         if (args.length != 1) {
             System.err.println("app <Cloud SQL JDBC connection string>");
             System.err.println("e.g.: app 'jdbc:postgresql:///postgres?socketFactory=com.google.cloud.sql.postgres.SocketFactory&cloudSqlInstance=gcp-project:europe-west3:sql-instance-1&username=postgres&password=postgres'");
@@ -37,8 +50,7 @@ public class App {
                 logger.info("Connection no longer valid");
 
 
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 logger.log(Level.WARNING, "SQLException", e);
             } catch (InterruptedException e) {
                 break;
