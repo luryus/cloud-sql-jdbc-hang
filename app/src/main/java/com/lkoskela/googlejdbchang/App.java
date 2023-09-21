@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.util.Properties;
 
 public class App {
 
@@ -27,12 +28,21 @@ public class App {
         }
 
         if (args.length != 1) {
-            System.err.println("app <Cloud SQL JDBC connection string>");
-            System.err.println("e.g.: app 'jdbc:postgresql:///postgres?socketFactory=com.google.cloud.sql.postgres.SocketFactory&cloudSqlInstance=gcp-project:europe-west3:sql-instance-1&username=postgres&password=postgres'");
+            System.err.println("Usage: app <Cloud SQL JDBC connection string>");
+            System.err.println("e.g.: app 'jdbc:postgresql:///postgres?cloudSqlInstance=gcp-project:europe-west3:sql-instance-1&username=postgres'");
             return;
         }
 
         var connString = args[0];
+        var password = System.getenv("DB_PASSWORD");
+        if (password == null) {
+            System.err.println("Give password in DB_PASSWORD env var");
+            return;
+        }
+
+        var props =  new Properties();
+        props.setProperty("password", password);
+        props.setProperty("socketFactory", "com.google.cloud.sql.postgres.SocketFactory");
 
         while (true) {
             try {
@@ -40,7 +50,7 @@ public class App {
                 Thread.sleep(1000);
 
                 logger.info("Opening connection...");
-                var conn = DriverManager.getConnection(connString);
+                var conn = DriverManager.getConnection(connString, props);
 
                 while (conn.isValid(5000)) {
                     logger.fine("Connection is still valid");

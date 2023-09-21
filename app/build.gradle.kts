@@ -19,7 +19,7 @@ dependencies {
     // Use JUnit test framework.
     testImplementation("junit:junit:4.13.2")
 
-    implementation("com.google.cloud.sql:postgres-socket-factory:1.13.1")
+    implementation("com.google.cloud.sql:postgres-socket-factory:1.14.0")
     implementation("org.postgresql:postgresql:42.6.0")
 }
 
