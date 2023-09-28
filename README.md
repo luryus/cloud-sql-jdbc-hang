@@ -1,9 +1,9 @@
 # Cloud SQL JDBC Driver Hang Repro
 
 This repo contains a simple sample project that demos a hang in the Cloud SQL JDBC Postgres driver.
-The hang happens on Windows, then Windows either sleeps or hibernates.
+The hang happens on Windows, when Windows either sleeps or hibernates.
 
-The issue seems to be a bug in the driver: internal timers for refreshing certificates does not trigger
+The issue seems to be a bug in the driver: internal timers for refreshing certificates do not trigger
 on time when Windows has been asleep. This causes the driver to try to create a connection with an outdated certificate, which obviously fails.
 
 There seems to be no way to work around the issue except restarting the process.
