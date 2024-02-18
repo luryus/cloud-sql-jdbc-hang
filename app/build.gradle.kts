@@ -19,8 +19,9 @@ dependencies {
     // Use JUnit test framework.
     testImplementation("junit:junit:4.13.2")
 
-    implementation("com.google.cloud.sql:postgres-socket-factory:1.14.0")
+    implementation("com.google.cloud.sql:postgres-socket-factory:1.16.0")
     implementation("org.postgresql:postgresql:42.6.0")
+    implementation("org.slf4j:slf4j-jdk14:2.0.12")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
